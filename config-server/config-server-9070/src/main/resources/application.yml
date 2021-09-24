@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: ssh://admin@localhost:29418/Test.git
+server:
+  port: 9070
+

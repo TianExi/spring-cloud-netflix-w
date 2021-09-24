@@ -1,0 +1,24 @@
+server:
+  port: 9080
+  servlet:
+    context-path: gateway
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: gateway
+          uri: http://www.baidu.com
+          order: 0
+          predicates:
+            - Path=/gateway/**
+            - Version=100
+            - Limit=10
+          filters:
+            - StripPrefix=1
+
+logging:
+  level:
+    root: info

@@ -1,6 +1,6 @@
-<configuration>
+<configuration scan="true" scanPeriod="1 seconds" debug="false">
 
-    <!-- 读取spring.application.name中的属性来生成日志文件名 -->
+<!-- 读取spring.application.name中的属性来生成日志文件名 -->
     <springProperty scope="context" name="logPath" source="local.log.path" defaultValue="d:home/logs"/>
     <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="tools"/>
 
@@ -21,9 +21,11 @@
 
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 过滤器，只记录INFO级别的日志 -->
+        <!-- 追加日志到原文件结尾 -->
+        <append>true</append>
+        <!-- 过滤器，只记录DEBUG级别的日志 -->
         <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>-->
@@ -31,7 +33,7 @@
             <FileNamePattern>${local.log.full.path}/logger.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
             <MaxHistory>90</MaxHistory> <!--最长保存90天，超过会删除-->
             <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <MaxFileSize>50MB</MaxFileSize>
+                <MaxFileSize>10MB</MaxFileSize>
             </TimeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -50,7 +52,4 @@
             <appender-ref ref="FILE"/>
         </root>
     </springProfile>
-    <!--<root level="DEBUG">
-        <appender-ref ref="FILE"/>
-    </root>-->
 </configuration>

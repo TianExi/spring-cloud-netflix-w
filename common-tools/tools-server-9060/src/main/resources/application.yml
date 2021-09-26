@@ -1,0 +1,29 @@
+server:
+  port: 9060
+  servlet:
+    context-path: /tools
+spring:
+  application:
+    name: tools
+  profiles:
+    active: dev
+logging:
+  level:
+    root: info
+
+---
+#DEV配置 java -jar -Dspring.profiles.active=dev sg-app-demo-2.5.3.jar > demo.log 2>&1 &
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+local:
+  log:
+    path: /home/logs
+

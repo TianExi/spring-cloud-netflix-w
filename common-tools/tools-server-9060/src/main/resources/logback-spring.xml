@@ -1,0 +1,56 @@
+<configuration>
+
+    <!-- 读取spring.application.name中的属性来生成日志文件名 -->
+    <springProperty scope="context" name="logPath" source="local.log.path" defaultValue="d:home/logs"/>
+    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="tools"/>
+
+    <!--应用名必须区分开，在同一虚机多个节点的情况下，app.name是相同的，这样就会写到同一个文件夹下-->
+    <property name="local.log.full.path" value="${logPath}/${logName}" />
+    <!--日志冗余打印 控制台颜色渲染 -->
+    <property name="local.file.format.console" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %green(%-5level) | %magenta(%-5relative) --- [%-20thread]  %blue(%logger{30}) : %msg%n" />
+    <!--日志冗余打印 无颜色渲染 -->
+    <property name="local.file.format.file" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | %-5relative --- [%-20thread]  %logger{30} : %msg%n" />
+
+    <!--生成文件到控制台-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${local.file.format.console}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--拒绝ERROR日志-->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${local.log.full.path}/logger.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxHistory>90</MaxHistory> <!--最长保存90天，超过会删除-->
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>50MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${local.file.format.file}</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/><!--对应上面appender的配置-->
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <!--<root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>-->
+</configuration>

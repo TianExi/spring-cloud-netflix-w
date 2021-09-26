@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common-tools</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>thread-pool-tool</module>
+        <module>tools-server-9060</module>
+    </modules>
 
 
 </project>

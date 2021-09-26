@@ -21,7 +21,7 @@
 
     <!-- 按照每天生成日志文件 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--拒绝ERROR日志-->
+        <!-- 过滤器，只记录INFO级别的日志 -->
         <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>

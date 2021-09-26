@@ -1,4 +1,4 @@
-<configuration scan="true" scanPeriod="1 seconds" debug="false">
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
 
 <!-- 读取spring.application.name中的属性来生成日志文件名 -->
     <springProperty scope="context" name="logPath" source="local.log.path" defaultValue="d:home/logs"/>

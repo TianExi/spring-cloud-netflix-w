@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * @ClassName ThreadPoolConfig
@@ -47,5 +44,10 @@ public class XThreadPoolConfig {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTimeInSeconds, TimeUnit.SECONDS, queue, xThreadFactory, xRejectedExecutionHandlers);
         log.info("线程池创建完毕，活跃线程数：" + threadPoolExecutor.getActiveCount());
         return threadPoolExecutor;
+    }
+
+    @Bean
+    public Map commonUsualHashMap () {
+        return new ConcurrentHashMap();
     }
 }
